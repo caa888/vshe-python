@@ -1,0 +1,183 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyOrzurEW7HthdPh1tOvdQY6",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/caa888/vshe-python/blob/main/DZ7_ipynb\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Задание 1. Получение данных из публичного API\n",
+        "\n",
+        "\n",
+        "Выберите публичный API. Например, JSONPlaceholder.\n",
+        "\n",
+        "Напишите скрипт, который:\n",
+        "\n",
+        "отправляет GET-запрос к /posts,\n",
+        "\n",
+        "извлекает и выводит заголовки и тела первых 5 постов."
+      ],
+      "metadata": {
+        "id": "g9fwk9KbyL9d"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "\n",
+        "import requests\n",
+        "\n",
+        "# URL публичного API\n",
+        "url = \"https://jsonplaceholder.typicode.com/posts\"\n",
+        "\n",
+        "# Отправляем GET-запрос\n",
+        "response = requests.get(url, timeout=10)\n",
+        "\n",
+        "# Проверяем успешность запроса\n",
+        "response.raise_for_status()\n",
+        "\n",
+        "# Преобразуем JSON-ответ в список словарей\n",
+        "posts = response.json()\n",
+        "\n",
+        "print(\"*\" * 50)\n",
+        "# Выводим заголовки и тела первых 5 постов\n",
+        "for post in posts[:5]:\n",
+        "    print(f\"Заголовок: {post['title']}\")\n",
+        "    print(f\"Текст: {post['body']}\")\n",
+        "    print(\"#\" * 50)\n",
+        "print(\"*\" * 50)\n"
+      ],
+      "metadata": {
+        "id": "VGzsRnxZyWR2",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "0f219905-0569-4d7d-cb18-5882496a141e"
+      },
+      "execution_count": 3,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "**************************************************\n",
+            "Заголовок: sunt aut facere repellat provident occaecati excepturi optio reprehenderit\n",
+            "Текст: quia et suscipit\n",
+            "suscipit recusandae consequuntur expedita et cum\n",
+            "reprehenderit molestiae ut ut quas totam\n",
+            "nostrum rerum est autem sunt rem eveniet architecto\n",
+            "##################################################\n",
+            "Заголовок: qui est esse\n",
+            "Текст: est rerum tempore vitae\n",
+            "sequi sint nihil reprehenderit dolor beatae ea dolores neque\n",
+            "fugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis\n",
+            "qui aperiam non debitis possimus qui neque nisi nulla\n",
+            "##################################################\n",
+            "Заголовок: ea molestias quasi exercitationem repellat qui ipsa sit aut\n",
+            "Текст: et iusto sed quo iure\n",
+            "voluptatem occaecati omnis eligendi aut ad\n",
+            "voluptatem doloribus vel accusantium quis pariatur\n",
+            "molestiae porro eius odio et labore et velit aut\n",
+            "##################################################\n",
+            "Заголовок: eum et est occaecati\n",
+            "Текст: ullam et saepe reiciendis voluptatem adipisci\n",
+            "sit amet autem assumenda provident rerum culpa\n",
+            "quis hic commodi nesciunt rem tenetur doloremque ipsam iure\n",
+            "quis sunt voluptatem rerum illo velit\n",
+            "##################################################\n",
+            "Заголовок: nesciunt quas odio\n",
+            "Текст: repudiandae veniam quaerat sunt sed\n",
+            "alias aut fugiat sit autem sed est\n",
+            "voluptatem omnis possimus esse voluptatibus quis\n",
+            "est aut tenetur dolor neque\n",
+            "##################################################\n",
+            "**************************************************\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Задание 2. Работа с параметрами запроса\n",
+        "\n",
+        "\n",
+        "\n",
+        "Используйте API OpenWeather для получения данных о погоде.\n",
+        "\n",
+        "Напишите программу, которая:\n",
+        "\n",
+        "принимает название города от пользователя,\n",
+        "\n",
+        "отправляет GET-запрос к API и выводит текущую температуру и описание погоды."
+      ],
+      "metadata": {
+        "id": "gdDQtwvE2J0h"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import requests\n",
+        "\n",
+        "API_KEY = \"0fe6f855a5da6501327c480b47c35fc9\"\n",
+        "\n",
+        "city = input(\"Введите город: \")\n",
+        "\n",
+        "url = \"https://api.openweathermap.org/data/2.5/weather\"\n",
+        "\n",
+        "params = {\"q\": city, \"appid\": API_KEY, \"units\": \"metric\", \"lang\": \"ru\"}\n",
+        "\n",
+        "response = requests.get(url, params=params)\n",
+        "\n",
+        "if response.status_code == 200:\n",
+        "    data = response.json()\n",
+        "    print(f\"Температура: {data['main']['temp']}°C\")\n",
+        "    print(f\"Погода: {data['weather'][0]['description']}\")\n",
+        "else:\n",
+        "    print(\"Ошибка:\", response.status_code, response.json().get(\"message\"))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "M_iYzsAW2LI9",
+        "outputId": "66fb615c-9de3-4d54-9493-7b8ac50db36d"
+      },
+      "execution_count": 9,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Введите город: Minsk\n",
+            "Ошибка: 401 Invalid API key. Please see https://openweathermap.org/faq#error401 for more info.\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
